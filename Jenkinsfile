@@ -15,12 +15,13 @@ pipeline {
         }
 	stage('Test html5') {
     	    steps {
-        	sh 'apt update && apt install -y python3-pip default-jre'
-        	sh 'pip install --default-timeout=1000 html5validator'
-	        sh 'html5validator --root _build/'
-	    }
-	}
-        
+        	sh '''
+            	      pip install --upgrade pip setuptools wheel
+            	      pip install --no-cache-dir --retries 5 --default-timeout=1000 html5validator
+            	      html5validator --root _build/
+	           '''
+    	   }
+	}        
         stage('Install surge')
         {
             steps {
