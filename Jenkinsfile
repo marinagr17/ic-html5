@@ -13,15 +13,15 @@ pipeline {
                 git branch:'master',url:'https://github.com/marinagr17/ic-html5.git'
             }
         }
-	stage('Test html5') {
+        
+        stage('Test html5') {
     	    steps {
-        	sh '''
-            	      pip install --upgrade pip setuptools wheel
-            	      pip install --no-cache-dir --retries 5 --default-timeout=1000 html5validator
-            	      html5validator --root _build/
-	           '''
-    	   }
-	}        
+                sh 'apt update && apt install -y python3-pip default-jre'
+	            sh 'pip install html5validator'
+		        sh 'html5validator --root _build/'
+            }
+	    }
+        
         stage('Install surge')
         {
             steps {
@@ -31,7 +31,7 @@ pipeline {
         stage('Deploy')
         {
             steps{
-                sh 'surge ./_build/ proyectoCI_CD.surge.sh --token $TOKEN'
+                sh 'surge ./_build/ marina.surge.sh --token $TOKEN'
             }
         }
         
